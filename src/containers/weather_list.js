@@ -1,36 +1,46 @@
 import React, { Component } from 'react';
-import  { connect } from 'react-redux';
+import { connect } from 'react-redux';
+import Chart from '../components/chart';
 
 class WeatherList extends Component {
 
   renderWeather(cityData){
-    <tr>
-      <td>
-        {cityData.city.name}
-      </td>
-    </tr>
+    const name = cityData.city.name;
+    const temps = cityData.list.map(weather => weather.main.temp)
+    const pressures = cityData.list.map(weather => weather.main.pressure)
+    const humidities = cityData.list.map(weather => weather.main.humidity)
+
+
+    return(
+      <tr key={name}>
+        <td>{name}</td>
+        <td><Chart data={temps} color={"red"}/></td>
+        <td><Chart data={pressures} color={"green"}/></td>
+        <td><Chart data={humidities} color={"orange"}/></td>
+      </tr>
+    )
   }
 
-  render(){
+  render() {
     return (
-      <table className="talbe table-hover">
+      <table className="table table-hover">
         <thead>
           <tr>
-            <th>City</th>
-            <th>Temperature</th>
-            <th>Pressure</th>
-            <th>Humidity</th>
+            <th style={{"width" : 200}}>City</th>
+            <th style={{"width" : 200}}>Temperature</th>
+            <th style={{"width" : 200}}>Pressure</th>
+            <th style={{"width" : 200}}>Humidity</th>
           </tr>
         </thead>
         <tbody>
-          {this.props.weather.map{this.renderWeather}}
+          {this.props.weather.map(this.renderWeather)}
         </tbody>
       </table>
     )
   }
 }
 
-function mapStateToProps({ weather }){
+function mapStateToProps({ weather }){ //imports only weather from state
   return { weather };
 }
 //puts weather on weatherlist's props
